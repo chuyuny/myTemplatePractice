@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #getMore{
+            position: fixed;
+            right: 60px;
+            top: 120px;
+            height: 80px;
+            width:80px;
+            border-radius: 5px;
+            background-color: #60662d;
+        }
+        .item {
+            width: 500px;
+            /*height: 800px;*/
+            margin-top: 20px;
+            margin-left: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .item .cover{
+            display: block;
+        }
+        .item .cover img{
+            display: block;
+        }
+        .item .bottom{
+            background-color: #666666;
+            height: 30px;
+            width: 100%;
+            margin-top: 0;
+            padding: 5px;
+            position: relative;
+        }
+        .item .bottom a{
+            font-family: 微软雅黑;
+            font-size: 14px;
+            line-height: 30px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+        }
+        .item .bottom .rightBox{
+            position: absolute;
+            right: 60px;
+            top: 8px;
+            height: 100%;
+        }
+        .item .bottom .rightBox span{
+            /*引入的font不能加字体*/
+            /*font-family: 微软雅黑;*/
+            font-size: 14px;
+            line-height: 30px;
+            color: #a8b1b4;
+            text-align: center;
+            margin: 0 20px;
+        }
+        .item .bottom .rightBox span:before{
+            color: #a53338;
+            margin-right: 10px;
+        }
+        /*自己写的心形*/
+        /*.items .bottom .rightBox span:before,.items .bottom .rightBox span:after{*/
+            /*content: "";*/
+            /*height: 23px;*/
+            /*width: 15px;*/
+            /*background-color: #a53338;*/
+            /*position: absolute;*/
+            /*border-radius: 50% 50% 0 0;*/
+            /*transform: rotate(45deg);*/
+            /*top: -1px;*/
+
+        /*}*/
+        /*.items .bottom .rightBox span:before{*/
+            /*left: -31px;*/
+            /*transform: rotate(-45deg);*/
+        /*}*/
+        /*.items .bottom .rightBox span:after{*/
+            /*right: 71px;*/
+        /*}*/
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+</head>
+<body>
+<input type="button" value="获取更多" id="getMore">
+<div class="container">
+
+    <div class="item">
+        <a href="#" class="cover"><img src="images/vol.840.jpg" alt=""></a>
+        <div class="bottom">
+            <a href="#">vol.841 总有片刻的悲伤和欢愉</a>
+            <div class="rightBox">
+                <span class="icon-heart">9012</span>
+                <span class="icon-comment">188</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript"src="js/template-native.js"></script>
+<script type="text/javascript"src="js/ajax_tool.js"></script>
+<script type="text/javascript"src="js/jquery.min.js"></script>
+<!--定义自己的模板-->
+<script type="text/html" id="template">
+    <%for(var i=0;i<items.length;i++){%>
+        <div class="item">
+            <a href="#" class="cover"><img src="<%=items[i].path%>" alt=""></a>
+            <div class="bottom">
+                <a href="#"><%=items[i].name%></a>
+                <div class="rightBox">
+                    <span class="icon-heart"><%=items[i].star%></span>
+                    <span class="icon-comment"><%=items[i].message%></span>
+                </div>
+            </div>
+        </div>
+    <%}%>
+</script>
+
+<!--自己写的js-->
+<script>
+
+    document.querySelector('#getMore').onclick =function () {
+
+
+//                获取后台数据
+        ajax_tool_pro({
+            method:'get',
+            data:undefined,
+            url:'02.getMore.php',
+            success:function (data) {
+                var dataArr=JSON.parse(data);
+
+                var obj ={
+                    items:dataArr
+                }
+//                console.log('obj返回'+obj);
+
+                //        获取自己写的模板
+                var resultStr = template('template',obj);
+                console.log(resultStr);
+//                document.querySelector(".container").innerHTML=resultStr;
+                $('.container').append(resultStr);
+            }
+        })
+
+
+    }
+</script>
